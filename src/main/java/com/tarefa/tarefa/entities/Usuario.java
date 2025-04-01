@@ -14,22 +14,24 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tb_usuario") // Define que essa entidade será armazenada na tabela "tb_usuario"
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID gerado automaticamente pelo banco
     private Long id;
     private String nome;
     private String email;
 
-    @JsonIgnore  
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonIgnore // Evita loop infinito na serialização (evita que tarefas puxem usuários e vice-versa)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY) // Um usuário pode ter várias tarefas
     private List<Tarefa> tarefas = new ArrayList<>();
 
     public Usuario() {
     }
 
+    // Getters e Setters (basicamente, só para acessar e modificar os atributos)
+    
     public Long getId() {
         return id;
     }

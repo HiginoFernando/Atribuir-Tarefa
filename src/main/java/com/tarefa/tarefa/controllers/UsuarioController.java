@@ -18,20 +18,20 @@ import com.tarefa.tarefa.entities.Usuario;
 import com.tarefa.tarefa.repositories.UsuarioRepository;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuarios") // Define o endpoint base como "/usuarios"
 public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-   
+    // Cria um novo usuário e retorna um DTO para evitar expor informações desnecessárias
     @PostMapping
     public ResponseEntity<UsuarioDTO> createUsuario(@RequestBody Usuario usuario) {
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
         return ResponseEntity.ok(new UsuarioDTO(usuarioSalvo));
     }
 
-   
+    // Retorna uma lista de usuários, convertendo para DTO antes de enviar
     @GetMapping
     public List<UsuarioDTO> getUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -44,11 +44,10 @@ public class UsuarioController {
         return usuariosDTO;
     }
 
-
- 
+    // Busca um usuário pelo ID e retorna os dados, se existir
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long usuarioId){
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-        return ResponseEntity.ok(usuario.orElse(null)); 
+        return ResponseEntity.ok(usuario.orElse(null)); // Se não achar, retorna null (não é a melhor prática, mas funciona)
     }
 }
